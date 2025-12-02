@@ -39,9 +39,7 @@ Starting from daily closing prices, the notebook builds several intermediate obj
 
 For each asset and for the S&P500:
 
-\[
-r_t = \frac{P_t}{P_{t-1}} - 1
-\]
+r_t = (P_t / P_{t-1}) - 1
 
 An **equally weighted portfolio** of AAPL, AMZN and MSFT is created:
 
