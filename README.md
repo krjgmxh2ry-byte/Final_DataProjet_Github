@@ -50,9 +50,7 @@ An **equally weighted portfolio** of AAPL, AMZN and MSFT is created:
 
 For some plots and volatility calculations, prices are normalised by their first value:
 
-\[
-P^{\text{norm}}_t = \frac{P_t}{P_{0}}
-\]
+P_norm(t) = P_t / P_0
 
 This is done both for the portfolio and for the S&P500.
 
