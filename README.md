@@ -111,6 +111,11 @@ df_final["result"] = (r_port_mean_21 > r_sp500_21).astype(int)
 
 
 
+## Note: Feature scaling is applied after the train/test split. 
+The scaler is fitted on the training data only to prevent data leakage.
+
+
+
 ## Notes on Model Evaluation and Debugging
 
 Two different executions of the project are provided:
