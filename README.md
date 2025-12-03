@@ -108,3 +108,25 @@ Then:
 
 ```python
 df_final["result"] = (r_port_mean_21 > r_sp500_21).astype(int)
+
+
+
+## Note on Reported Results
+
+Two different execution contexts are provided in this project:
+
+- The command-line pipeline (`main.py`), executed on the full benchmark dataset,  
+  where some models may reach very high accuracy due to the simplicity 
+  and clear separability of the Iris dataset.
+
+- The exploratory notebook (`TheDataProject_Notebook.ipynb`), where additional preprocessing,
+  different train/test splits and intermediate checks are performed.  
+  In this setting, the observed accuracy is around 0.80, which is more representative of a
+  realistic evaluation scenario.
+
+This discrepancy is expected and intentional:
+the notebook is used for experimentation and validation,
+while `main.py` serves as a clean, reproducible entry point to demonstrate the full ML pipeline.
+
+The goal of this project is not to maximize accuracy, but to illustrate good software engineering
+and machine learning practices.
