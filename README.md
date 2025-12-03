@@ -62,9 +62,7 @@ On **20-day rolling windows**, we compute:
 - **Rolling mean** of prices  
 - **Coefficient of variation (CV)** as a proxy for volatility:
 
-\[
-\text{cv} = \frac{\text{variance}}{\text{mean}}
-\]
+CV = variance / mean
 
 This gives:
 - `cv_rolling_port` for the portfolio  
@@ -77,24 +75,20 @@ The 10-year Treasury yield (`^TNX`) is downloaded and converted to an approximat
 - 20-day rolling mean of the yield
 - Divided by 250 (approx. trading days per year) → `rf_tout`
 
-On the same 20-day windows we compute **block returns**:
+On the same 20-day windows, we compute **block returns**:
 
-\[
-R_{\text{block}} = \frac{P_{\text{last}} - P_{\text{first}}}{P_{\text{first}}}
-\]
+Block return = (P_last − P_first) / P_first
 
 - `r_port` and `r_port_mean`: 20-day portfolio returns
 - `r_sp500`: 20-day S&P500 returns
 
-Then the **Sharpe ratios** are approximated as:
+Then the **Sharpe ratios** are approximated as follows:
 
-\[
-\text{Sharpe}_{\text{port}} = \frac{R_{\text{port}} - r_f}{\text{cv\_rolling\_port}}
-\]
+ Portfolio Sharpe ratio:  
+  (Portfolio return − risk-free rate) / rolling coefficient of variation  
 
-\[
-\text{Sharpe}_{\text{sp500}} = \frac{R_{\text{sp500}} - r_f}{\text{cv\_rolling\_sp}}
-\]
+ S&P500 Sharpe ratio:  
+  (S&P500 return − risk-free rate) / rolling coefficient of variation
 
 ### 5. Covariance with the market
 
