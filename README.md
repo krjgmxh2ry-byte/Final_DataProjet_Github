@@ -150,3 +150,20 @@ while `main.py` serves as a clean, reproducible entry point to demonstrate the f
 
 The goal of this project is not to maximize accuracy, but to illustrate good software engineering
 and machine learning practices.
+
+
+
+## Results and Notes on Model Performance
+
+The command-line script (`main.py`) uses the Iris dataset to demonstrate a clean, fully reproducible machine learning pipeline.  
+Due to the simplicity and small size of the Iris dataset, several models (Random Forest, KNN, Logistic Regression) achieve an accuracy of 1.00 on the test set. This result is expected and commonly observed in educational examples.
+
+The accompanying Jupyter notebook (`TheDataProject_Notebook.ipynb`) presents experiments on a more realistic dataset with greater variability and noise. In this setting, model performance is lower, with an average accuracy of approximately **0.80**, which better reflects real-world machine learning conditions.
+
+This difference in performance highlights an important concept:
+- High accuracy on small, clean datasets does not necessarily generalize to real-world data.
+- Model evaluation depends strongly on data complexity, preprocessing choices, and experimental setup.
+
+Both implementations are intentionally included:
+- `main.py` focuses on **reproducibility, structure, and best practices.
+- The notebook focuses on **exploration, realism, and practical limitations of machine learning models.
