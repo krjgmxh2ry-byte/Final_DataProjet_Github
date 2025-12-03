@@ -153,6 +153,19 @@ and machine learning practices.
 
 
 
+## Reproducibility and Randomness
+
+Some machine learning algorithms, such as Random Forests, rely on randomness (e.g. bootstrapping samples or selecting random feature subsets).  
+As a result, running the same code multiple times can yield slightly different performance metrics.
+
+In this project, reproducibility is ensured in the command-line pipeline (`main.py`) by fixing random seeds where applicable. This guarantees stable and repeatable results when the project is executed from the repository.
+
+In contrast, the Jupyter notebook intentionally illustrates more exploratory behavior, where performance variations may occur across runs. This distinction reflects common practices in machine learning between reproducible pipelines and experimental analysis.
+
+Where applicable, random seeds (`random_state`) are explicitly fixed (e.g. in train/test splitting and tree-based models) to ensure fully reproducible results when running the command-line pipeline. The same random seed is used consistently across the pipeline, following best practices for reproducible machine learning experiments.
+
+
+
 ## Results and Notes on Model Performance
 
 The command-line script (`main.py`) uses the Iris dataset to demonstrate a clean, fully reproducible machine learning pipeline.  
