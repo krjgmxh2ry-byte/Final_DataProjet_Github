@@ -111,6 +111,21 @@ df_final["result"] = (r_port_mean_21 > r_sp500_21).astype(int)
 
 
 
+## Notes on Model Evaluation and Debugging
+
+Two different executions of the project are provided:
+
+- The **Jupyter notebook** (`TheDataProject_Notebook.ipynb`) is designed for exploratory analysis and experimentation on a larger, more realistic dataset. In this setting, the model reaches an accuracy of approximately **0.80**, which reflects a more challenging and realistic classification task.
+
+- The **command-line pipeline** (`python main.py`) is a fully reproducible, modular implementation using a clean dataset and a fixed train/test split. In this configuration, the models achieve very high performance (up to **1.00 accuracy** on the test set), which is expected for this dataset and mainly serves to validate the correctness of the pipeline, the preprocessing steps, and the model implementations.
+
+This difference in performance is intentional and illustrates an important machine learning principle:  
+**high accuracy can depend strongly on dataset simplicity and experimental setup**, and should always be interpreted in context.
+
+The project structure (separate data loading, preprocessing, training, and evaluation steps) also makes it easy to debug common machine learning issues such as shape mismatches, incorrect data types, or missing values, as highlighted in the course material.
+
+
+
 ## Note on Reported Results
 
 Two different execution contexts are provided in this project:
