@@ -129,6 +129,8 @@ This difference in performance is intentional and illustrates an important machi
 
 The project structure (separate data loading, preprocessing, training, and evaluation steps) also makes it easy to debug common machine learning issues such as shape mismatches, incorrect data types, or missing values, as highlighted in the course material.
 
+Regarding overfitting, model performance is monitored by comparing training and test accuracy. In the exploratory notebook, performance remains moderate and consistent across splits (≈0.80), suggesting limited overfitting. In the command-line pipeline, very high accuracy is observed due to the simplicity of the dataset, which is a known and expected behavior rather than an overfitting issue.
+
 
 
 ## Note on Reported Results
