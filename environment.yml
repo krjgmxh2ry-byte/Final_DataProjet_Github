@@ -1,6 +1,7 @@
 name: final-data-project
 channels:
   - defaults
+  - conda-forge
 dependencies:
   - python=3.11
   - pandas
@@ -8,3 +9,7 @@ dependencies:
   - matplotlib
   - seaborn
   - jupyter
+  - yfinance
+  - black 
+  - mypy
+  - scikit-learn 
