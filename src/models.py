@@ -7,6 +7,7 @@ from sklearn.ensemble import RandomForestClassifier
 
 def train_random_forest(X_train, y_train, **kwargs):
     """Train a Random Forest classifier."""
+    # kwargs allows you to pass n_estimators, max_depth, etc. from main().
     model = RandomForestClassifier(**kwargs)
     model.fit(X_train, y_train)
     return model
@@ -16,6 +17,7 @@ def train_logistic_regression(
     X_train: pd.DataFrame, y_train: pd.Series, **kwargs
 ) -> LogisticRegression:
     """Train a logistic regression model."""
+    # Penalty/solver can be adjusted via kwargs if needed.
     model = LogisticRegression(**kwargs)
     model.fit(X_train, y_train)
     return model
