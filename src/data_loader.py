@@ -6,6 +6,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 TICKERS = ["MSFT", "AMZN", "AAPL"]
+# Core tickers used to build the portfolio; change here to reuse the pipeline.
 
 
 def load_data_assets(tickers: list, start="2013-01-01", end="2023-12-31") -> dict:
@@ -18,6 +19,7 @@ def load_data_assets(tickers: list, start="2013-01-01", end="2023-12-31") -> dic
     assets = {}
     for ticker in tickers:
         df = yf.download(ticker, start=start, end=end)
+        # Les colonnes multi-index de yfinance sont aplaties pour rester simples.
         df.columns = df.columns.get_level_values(0)
         assets[ticker] = df
     return assets
@@ -27,6 +29,7 @@ def load_benchmark(
     tickers: str = "^GSPC", start: str = "2013-01-01", end: str = "2023-12-31"
 ) -> pd.DataFrame:
     """Load market benchmark data from Yahoo Finance from start to end dates."""
+    # Par défaut on prend le S&P500 (^GSPC) comme indice de référence.
     bench = yf.download(tickers=tickers, start=start, end=end, interval="1d")
     bench.columns = bench.columns.get_level_values(0)
     return bench
@@ -35,6 +38,7 @@ def load_benchmark(
 def load_risk_free(ticker="^TNX", start="2013-01-01", end="2023-12-31") -> pd.Series:
     """Charge le taux sans risque (ex: TNX) et le convertit en rolling 20 jours."""
     df_rf = yf.download(ticker, start=start, end=end)["Close"]
+    # Lissage 20 jours et conversion en taux journalier (~250 jours ouvrés).
     return df_rf.rolling(window=20).mean() / 250  # 250 jours ouvrés
 
 
@@ -43,6 +47,7 @@ def compute_daily_return(df: pd.DataFrame) -> pd.Series:
     if "Close" not in df.columns:
         raise ValueError("DataFrame must contain 'Close' column")
     else:
+        # (P_t / P_{t-1}) - 1 : rendement simple jour par jour.
         return (df["Close"] / df["Close"].shift(1)) - 1
 
 
@@ -58,8 +63,9 @@ def compute_portfolio_returns(stocks: dict) -> pd.DataFrame:
     rendements = {name: compute_daily_return(df) for name, df in stocks.items()}
     portefeuille = pd.concat(
         [pd.DataFrame(r) for r in rendements.values()], axis=1
-    ).reindex(next(iter(rendements.values())).index)
+    ).reindex(next(iter(rendements.values())).index)  # aligne les dates sur le premier actif
     portefeuille.columns = list(rendements.keys())
+    # Colonne 'moyenne' = rendement moyen non pondéré du portefeuille.
     portefeuille["moyenne"] = portefeuille.mean(axis=1)
     return portefeuille
 
@@ -131,10 +137,13 @@ def build_final_df_clean(
     Returns:
         pd.DataFrame: Clean final DataFrame ready for analysis
     """
+    # Assemble les prix de clôture de chaque actif du portefeuille.
     portefeuille = pd.concat([df["Close"] for df in df_assets.values()], axis=1)
     portefeuille.columns = df_assets.keys()
+    # Normalise le S&P500 pour comparer les dynamiques relatives.
     sp500_norm = normalize_data(sp500, "Close").reindex(portefeuille.index)
 
+    # Rolling CV pour quantifier la volatilité relative (portefeuille vs. S&P500).
     port_rolling_var = portefeuille.rolling(window=window).var().mean(axis=1)
     port_rolling_mean = portefeuille.rolling(window=window).mean().mean(axis=1)
     cv_rolling_port = port_rolling_var / port_rolling_mean
@@ -146,11 +155,13 @@ def build_final_df_clean(
     def block_return(block):
         return (block.iloc[-1] - block.iloc[0]) / block.iloc[0]
 
+    # Rendement moyen sur la fenêtre glissante pour le portefeuille et le benchmark.
     r_port = portefeuille.rolling(window=window).apply(block_return)
     r_port_mean = r_port.mean(axis=1)
 
     r_sp500 = sp500["Close"].rolling(window=window).apply(block_return)
 
+    # Sharpe basé sur le taux 10Y comme proxy du taux sans risque (aligné par date).
     sharpe_port = (r_port_mean - rf["^TNX"]) / cv_rolling_port
     sharpe_sp500 = (r_sp500 - rf["^TNX"]) / cv_rolling_sp
 
@@ -166,6 +177,7 @@ def build_final_df_clean(
     r_port_mean_21 = r_port.mean(axis=1)
     r_sp500_21 = sp500["Close"].rolling(window=window + 1).apply(block_return)
 
+    # Cible binaire: 1 si le portefeuille surperforme le S&P500 sur le bloc glissant.
     df_final = pd.DataFrame(
         {
             "cv_port": cv_rolling_port,
