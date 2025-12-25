@@ -2,8 +2,12 @@
 
 import numpy as np
 import pandas as pd
+
+# Models
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
+
+# Evaluation metrics
 from sklearn.metrics import (
     accuracy_score,
     classification_report,
@@ -11,7 +15,11 @@ from sklearn.metrics import (
     auc,
     precision_recall_curve,
 )
+
+# Plotting tools
 import matplotlib.pyplot as plt
+
+# Confusion matrix utilities
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 
@@ -20,6 +28,7 @@ def evaluate_logistic_regression(
 ) -> tuple[np.ndarray, np.ndarray]:
     """Evaluate model performance: print accuracy and classification report."""
     y_pred = model.predict(X_test)
+    # Probability of belonging to class 1 (used for curves ROC/PR).
     y_prob = model.predict_proba(X_test)[:, 1]
 
     print("Accuracy:", accuracy_score(y_test, y_pred))
@@ -35,6 +44,7 @@ def evaluate_random_forest(
     Evaluate RF performance, returns predictions and probabilities.
     """
     y_pred = model.predict(X_test)
+    # Probability of belonging to class 1 (used for ROC/PR curves).
     y_prob = model.predict_proba(X_test)[:, 1]
     print("Accuracy:", accuracy_score(y_test, y_pred))
     print(classification_report(y_test, y_pred))
@@ -65,6 +75,7 @@ def plot_roc_curve(
 
 def plot_feature_importance(model: LogisticRegression, feature_names: list) -> None:
     """Plot the coefficients of the logistic regression model."""
+    # Coefficients > 0 favour class 1, < 0 favour class 0.
     coefs = pd.Series(model.coef_[0], index=feature_names)
     coefs = coefs.sort_values()
 
@@ -111,7 +122,7 @@ def probabilities_histogram(y_test, y_prob) -> None:
 
 
 def plot_roc_curve_comparison(fpr1, tpr1, fpr2, tpr2) -> None:
-    """Plots the comaprision of ROC curves of 2 models."""
+    """Visually compare two ROCs (AUC shown in the legend)."""
     plt.figure(figsize=(8, 6))
     plt.plot(fpr1, tpr1, label=f"Logistic Regression (AUC={auc(fpr1, tpr1):.2f})")
     plt.plot(fpr2, tpr2, label=f"Random Forest (AUC={auc(fpr2, tpr2):.2f})")
