@@ -20,8 +20,9 @@ def main() -> None:
     """Main workflow for training, evaluating, and comparing Logistic Regression and Random Forest
     classifiers on the final portfolio dataset. Produces multiple evaluation plots."""
 
-    # Logistic Regression
+    # 1) Data loading + split train/test
     X_train, X_test, y_train, y_test, df = load_and_split()
+    # 2) Training + evaluation Logistic Regression
     lr_model = train_logistic_regression(X_train, y_train)
     y_pred_lr, y_prob_lr = evaluate_logistic_regression(lr_model, X_test, y_test)
     fpr_lr, tpr_lr = plot_roc_curve(y_test, y_prob_lr)
@@ -30,7 +31,7 @@ def main() -> None:
     plot_precision_recall_curve(y_test, y_prob_lr)
     probabilities_histogram(y_test, y_prob_lr)
 
-    # Random Forest
+    # 3) Training + Random Forest Evaluation
     rf_model = train_random_forest(X_train, y_train)
     y_pred_rf, y_prob_rf = evaluate_random_forest(rf_model, X_test, y_test)
     fpr_rf, tpr_rf = plot_roc_curve(y_test, y_prob_rf)
@@ -38,7 +39,7 @@ def main() -> None:
     plot_precision_recall_curve(y_test, y_prob_rf)
     probabilities_histogram(y_test, y_prob_rf)
 
-    # comaprison
+    # 4) Visual comparison of the two models
     plot_roc_curve_comparison(fpr_lr, tpr_lr, fpr_rf, tpr_rf)
 
 
