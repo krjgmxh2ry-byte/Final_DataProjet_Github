@@ -1,6 +1,6 @@
 # Portfolio vs S&P500 — Outperformance Prediction (2013–2023)
 
-## 1. Project description
+## 1. Research question
 
 This project predicts whether an equally weighted portfolio of AAPL, AMZN, and MSFT will outperform the S&P 500 over the next 20 days, using machine-learning models and historical financial data.
 
@@ -180,7 +180,7 @@ asking better questions, selecting useful ideas, and verifying everything before
 
 
 
-## Requirements
+## 7. Requirements
 
 - Python 3.11
 - Conda (to create the `final-data-project` environment)
