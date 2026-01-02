@@ -1,98 +1,193 @@
-...existing code...
 # Portfolio vs S&P500 — Outperformance Prediction (2013–2023)
 
-## Research question
-Which classification model best predicts whether an equally-weighted portfolio [AAPL, AMZN, MSFT] will outperform the S&P500 over the next 20 days?  
-(Compare Random Forest, Logistic Regression, etc.)
+## 1. Project description
 
-## Setup
-1. Create the conda environment and activate it:
-   ```sh
-   conda env create -f environment.yml
-   conda activate final-data-project
-   ```
-2. In VS Code: open the project folder and select the Python interpreter from the conda environment.  
-   For Jupyter notebooks, install/select the environment kernel if needed.
+This project predicts whether an equally weighted portfolio of AAPL, AMZN, and MSFT will outperform the S&P 500 over the next 20 days, using machine-learning models and historical financial data.
 
-## Usage
-- Run the full pipeline (use the integrated terminal in VS Code):
-  ```sh
-  python main.py
-  ```
-- Interactive exploration:
-  - Open `notebooks/data_exploration.ipynb` in VS Code or Jupyter.
-  - Choose the `final-data-project` kernel.
 
-## Project summary
-- Goal: predict whether the equally-weighted portfolio [AAPL, AMZN, MSFT] will outperform the S&P500 over a 20-day horizon.
-- Data: downloaded via `yfinance` (see `src/data_loader.py`).
+## 2. Repository structure
 
-## Project structure
-- `main.py` — main pipeline script  
-- `src/`
-  - `src/data_loader.py` — data download, preprocessing, feature engineering, label creation
-  - `src/models.py` — model training functions
-  - `src/evaluation.py` — evaluation metrics and plotting utilities
-- `notebooks/data_exploration.ipynb` — interactive exploration  
-- `environment.yml` — environment and dependencies
+The repository is organized as follows:
 
-## Pipeline (where to look in code)
-- Data loading & split: `src.data_loader.load_and_split`  
-- Core feature engineering: `src.data_loader.build_final_df_clean` (rolling CV, Sharpe, block returns, label)  
-- Models: `src.models.train_logistic_regression`, `src.models.train_random_forest`  
-- Evaluation & plots: functions in `src.evaluation`
+- `notebooks/` – Interactive analysis and visualizations  
+  - `data_exploration.ipynb` – Main notebook: data loading, plots, feature exploration  
+  - `TheDataProject_Notebook.ipynb` – Additional notebook from earlier stages of the project  
 
-## Feature engineering (key formulas)
-- Daily return: r_t = P_t / P_{t-1} - 1  
-- Block/window return: R_block = (P_last - P_first) / P_first  
-- Coefficient of variation (CV): variance_rolling / mean_rolling  
-- Approximate Sharpe: (R_window - rf) / CV
+- `src/` – Core project code  
+  - `data_loader.py` – Downloading data, preprocessing, feature engineering, label creation  
+  - `models.py` – Model definitions and training utilities  
+  - `evaluation.py` – Evaluation metrics and plotting functions  
 
-## Label definition
-- Compare 21-day returns: r_port_21 vs r_sp500_21  
-- `result` = 1 if r_port_21 > r_sp500_21, else 0  
-  (implemented in `src.data_loader.build_final_df_clean`)
+- `main.py` – End-to-end pipeline script (runs the whole project from the command line)  
+- `environment.yml` – Conda environment with all dependencies  
+- `README.md` – Project documentation  
+- `.gitignore` – Files and folders ignored by Git
 
-## Reproducibility
-- `main.py` fixes random seeds for reproducibility.  
-- For debugging, run notebook cells individually to inspect intermediate outputs.
 
-## Results — PLACEHOLDER (fill with your final metrics)
-- Model: Logistic Regression
-  - Test Accuracy: 0.80
-  - Precision: 0.84 (classe 0) / 0.78 (classe 1)
-  - Recall: 0.59 (classe 0) / 0.93 (classe 1)
-  - F1-score: 0.69 / 0.85
-  
+## 3. Installation
 
-- Model: Random Forest
-  - Test Accuracy: 0.9
-  - Precision: 0.84 / 0.94
-  - Recall: 0.91 / 0.89
-  - F1-score: 0.88 / 0.92
-  
+This project uses a Conda environment to manage all dependencies.
 
-- Notes on overfitting / stability:
- - Logistic Regression shows consistent performance on test data without overfitting, as indicated by balanced precision, recall, and F1 scores.
-  - Random Forest performs better overall and remains stable, suggesting it generalizes well without signs of overfitting, despite being a more complex model.
+From the root of the repository:
 
-## Tips & common pitfalls
-- Scale features AFTER train/test split to avoid data leakage.  
-- Ensure datetime indices are aligned (`.reindex(...)`) before rolling operations.  
-- Useful functions to inspect:
-  - `src.data_loader.compute_portfolio_returns`
-  - `src.data_loader.compute_daily_return`
-  - `src.evaluation.plot_roc_curve`
+```bash
+conda env create -f environment.yml
+conda activate final-data-project
+```
 
-Files of interest
-- `main.py`  
-- `src/data_loader.py`  
-- `src/models.py`  
-- `src/evaluation.py`  
-- `notebooks/data_exploration.ipynb`  
-- `environment.yml`
+## 4. How to run the project
 
-License
-- (Add license information if needed)
+Run the full pipeline from the root of the project:
 
-...existing code...
+```bash
+python main.py
+```
+
+### Expected output
+
+When running:
+
+```bash
+python main.py
+```
+
+you should see messages similar to:
+
+```
+Loading data...
+Training models...
+Evaluating models...
+
+Accuracy, precision, recall and F1-score printed for each model.
+```
+
+No files are saved to disk. Results are printed in the terminal and visualized in notebooks.
+
+
+
+## 5. Expected outputs (what you should obtain)
+
+After running the project, you should obtain:
+
+###  Plots
+From the notebook:
+- Rolling returns and benchmark comparison
+- Rolling Sharpe ratios
+- Rolling outperformance fraction
+- Distribution plots of risk / performance metrics
+
+These visualizations help understand how the portfolio behaves vs the S&P500 over time.
+
+
+
+###  Metrics printed in terminal (when running `python main.py`)
+
+For each model, you should see evaluation metrics such as:
+
+- Accuracy
+- Precision
+- Recall
+- F1-score
+- Classification report
+
+
+
+###  Internal project artifacts (not committed)
+
+During execution, the project temporarily creates in-memory objects such as:
+
+- cleaned datasets
+- feature matrices
+- trained model objects
+- prediction labels
+
+These are used only for computation and are **not saved as files**, unless added later.
+
+
+
+In short: if you see the plots in the notebook and the metrics printed in the terminal, the pipeline works correctly.
+
+
+
+### 5.1 Model results (metrics)
+
+Below are the main evaluation results obtained when running `python main.py`.
+
+#### Model: Logistic Regression
+- Test Accuracy: 0.80
+- Precision: 0.84 (class 0) / 0.78 (class 1)
+- Recall: 0.59 (class 0) / 0.93 (class 1)
+- F1-score: 0.69 / 0.85
+
+#### Model: Random Forest
+- Test Accuracy: 0.89
+- Precision: 0.84 / 0.94
+- Recall: 0.91 / 0.89
+- F1-score: 0.88 / 0.92
+
+**Interpretation (short):**
+- Logistic Regression performs consistently and does not overfit.
+- Random Forest performs better overall and remains stable, suggesting good generalization.
+
+
+
+
+## 6. Data
+
+The project uses publicly available financial market data:
+
+- **Stock prices** (AAPL, AMZN, MSFT)
+- **S&P 500 benchmark**
+- **Risk-free rate (TNX – 10-year Treasury)**
+
+The data are downloaded automatically from Yahoo Finance via the Python library `yfinance`.
+
+You do NOT need to download anything manually.
+
+All downloads happen inside:
+
+`src/data_loader.py`
+
+If the user wants to change tickers or dates, they can modify the parameters directly in that file.
+
+## AI Usage
+
+AI tools were used as support only. I stayed responsible for every decision, explanation, and line of code.
+
+### Tools
+- ChatGPT Pro (since October 2023)
+- OpenAI Codex (used occasionally inside VS Code)
+
+### What AI helped with
+- Clarifying concepts (models, metrics, workflows)
+- Explaining errors and debugging strategies
+- Generating small boilerplate code (function templates, plotting skeletons)
+- Improving documentation structure and wording
+- Suggestions for refactoring and tests
+
+### How I used and verified AI
+- I reviewed every suggestion carefully
+- I rewrote code to fit my own design
+- I tested everything manually
+- I removed anything unclear or incorrect
+
+AI did not write the project for me.  
+It acted as a tutor and assistant.
+
+### Reflection
+Using AI required me to think like an “information architect”:
+asking better questions, selecting useful ideas, and verifying everything before using it.
+
+
+
+## Requirements
+
+- Python 3.11
+- Conda (to create the `final-data-project` environment)
+- Main Python libraries:
+  - pandas
+  - numpy
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - yfinance
