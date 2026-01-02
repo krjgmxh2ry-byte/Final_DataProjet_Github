@@ -59,18 +59,18 @@ Which classification model best predicts whether an equally-weighted portfolio [
 
 ## Results — PLACEHOLDER (fill with your final metrics)
 - Model: Logistic Regression
-  - Test Accuracy: ______
-  - Precision: ______
-  - Recall: ______
-  - F1-score: ______
-  - AUC: ______
+  - Test Accuracy: 0.80
+  - Precision: 0.84 (classe 0) / 0.78 (classe 1)
+  - Recall: 0.59 (classe 0) / 0.93 (classe 1)
+  - F1-score: 0.69 / 0.85
+  
 
 - Model: Random Forest
-  - Test Accuracy: ______
-  - Precision: ______
-  - Recall: ______
-  - F1-score: ______
-  - AUC: ______
+  - Test Accuracy: 0.9
+  - Precision: 0.84 / 0.94
+  - Recall: 0.91 / 0.89
+  - F1-score: 0.88 / 0.92
+  
 
 - Notes on overfitting / stability:
   - ___________________________________________

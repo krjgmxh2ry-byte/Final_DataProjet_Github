@@ -30,7 +30,7 @@ def evaluate_logistic_regression(
     y_pred = model.predict(X_test)
     # Probability of belonging to class 1 (used for curves ROC/PR).
     y_prob = model.predict_proba(X_test)[:, 1]
-
+    
     print("Accuracy:", accuracy_score(y_test, y_pred))
     print(classification_report(y_test, y_pred))
 
@@ -132,3 +132,7 @@ def plot_roc_curve_comparison(fpr1, tpr1, fpr2, tpr2) -> None:
     plt.title("ROC Curve Comparison")
     plt.legend()
     plt.show()
+
+
+
+  

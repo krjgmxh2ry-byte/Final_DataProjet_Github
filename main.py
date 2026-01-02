@@ -31,6 +31,8 @@ def main() -> None:
     plot_precision_recall_curve(y_test, y_prob_lr)
     probabilities_histogram(y_test, y_prob_lr)
 
+
+
     # 3) Training + Random Forest Evaluation
     rf_model = train_random_forest(X_train, y_train)
     y_pred_rf, y_prob_rf = evaluate_random_forest(rf_model, X_test, y_test)
@@ -45,3 +47,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
