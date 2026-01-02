@@ -73,8 +73,8 @@ Which classification model best predicts whether an equally-weighted portfolio [
   
 
 - Notes on overfitting / stability:
-  - ___________________________________________
-  - ___________________________________________
+ - Logistic Regression shows consistent performance on test data without overfitting, as indicated by balanced precision, recall, and F1 scores.
+  - Random Forest performs better overall and remains stable, suggesting it generalizes well without signs of overfitting, despite being a more complex model.
 
 ## Tips & common pitfalls
 - Scale features AFTER train/test split to avoid data leakage.  
