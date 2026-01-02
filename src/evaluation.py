@@ -70,6 +70,7 @@ def plot_roc_curve(
     plt.title("Receiver Operating Characteristic")
     plt.legend(loc="lower right")
     plt.show()
+    #plt.close()   # Close the plot window after showing it so the script can continue running
     return fpr, tpr
 
 
@@ -86,6 +87,7 @@ def plot_feature_importance(model: LogisticRegression, feature_names: list) -> N
     plt.ylabel("Feature")
     plt.grid(alpha=0.3)
     plt.show()
+    #plt.close()   # Close the plot window after showing it so the script can continue running
 
 
 def plot_confusion_matrix(y_test, y_pred) -> None:
@@ -95,6 +97,7 @@ def plot_confusion_matrix(y_test, y_pred) -> None:
     disp.plot(cmap="Blues")
     plt.title("Confusion Matrix")
     plt.show()
+    #plt.close()   # Close the plot window after showing it so the script can continue running
 
 
 def plot_precision_recall_curve(y_test, y_prob) -> None:
@@ -107,6 +110,7 @@ def plot_precision_recall_curve(y_test, y_prob) -> None:
     plt.title("Precision-Recall Curve")
     plt.grid(alpha=0.3)
     plt.show()
+    #plt.close()   # Close the plot window after showing it so the script can continue running
 
 
 def probabilities_histogram(y_test, y_prob) -> None:
@@ -119,6 +123,7 @@ def probabilities_histogram(y_test, y_prob) -> None:
     plt.title("Histogram of Predicted Probabilities")
     plt.legend()
     plt.show()
+    #plt.close()   # Close the plot window after showing it so the script can continue running
 
 
 def plot_roc_curve_comparison(fpr1, tpr1, fpr2, tpr2) -> None:
@@ -132,6 +137,7 @@ def plot_roc_curve_comparison(fpr1, tpr1, fpr2, tpr2) -> None:
     plt.title("ROC Curve Comparison")
     plt.legend()
     plt.show()
+    #plt.close()   # Close the plot window after showing it so the script can continue running
 
 
 
