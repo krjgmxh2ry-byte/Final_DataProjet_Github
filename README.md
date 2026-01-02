@@ -129,6 +129,21 @@ Below are the main evaluation results obtained when running `python main.py`.
 - Logistic Regression performs consistently and does not overfit.
 - Random Forest performs better overall and remains stable, suggesting good generalization.
 
+### ROC–AUC
+
+To better evaluate classifier performance, we also computed the ROC–AUC score.
+
+The ROC curve compares the True Positive Rate vs. False Positive Rate across
+different thresholds.
+
+Result:
+
+- **AUC = 0.89**
+
+An AUC close to 1.0 indicates strong discriminative ability.  
+A value of 0.89 suggests the model distinguishes well between
+“outperform” vs “not outperform”, without relying only on accuracy.
+
 
 
 
@@ -149,6 +164,9 @@ All downloads happen inside:
 `src/data_loader.py`
 
 If the user wants to change tickers or dates, they can modify the parameters directly in that file.
+
+
+
 
 ## AI Usage
 
@@ -191,3 +209,45 @@ asking better questions, selecting useful ideas, and verifying everything before
   - matplotlib
   - seaborn
   - yfinance
+
+
+
+## 8. Test suite — Results & Coverage
+
+We implemented a complete testing pipeline covering different aspects of the project.
+
+####  Unit tests (core functions)
+- `test_data_loader.py`
+  Verifies that financial data loads correctly and returns valid DataFrames.
+
+- `test_models.py`
+  Ensures Logistic Regression and Random Forest:
+  - train without crashing
+  - make predictions
+  - achieve accuracy > 0.5 (better than random)
+
+####  Integration test
+- `test_integration_main.py`
+  Runs the full pipeline (`python main.py`) and checks that execution finishes successfully.
+
+####  Error-handling test
+- `test_error_handling.py`
+  Confirms invalid input shapes raise appropriate exceptions.
+
+####  Performance test
+- `test_performance.py`
+  Ensures model training remains within a reasonable time budget.
+
+
+
+###  Test coverage
+
+Coverage was computed using:
+
+```bash
+pytest --cov=src --cov-report=term-missing
+TOTAL: 19% coverage
+
+I am aware that recommended coverage is above 70%.
+At this stage, the tests mainly target core functionality (data loading, model training, integration pipeline, performance and error-handling).
+Most of the uncovered lines come from secondary utilities (plotting, helpers, exploratory code), which are not critical for correctness but could be tested in future iterations.
