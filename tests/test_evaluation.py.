@@ -1,0 +1,146 @@
+"""
+
+NOTE — Purpose of these evaluation tests
+
+These tests were added to increase test coverage by validating the evaluation
+functions (predictions, probabilities, ROC computation, and plot execution).
+
+Current situation:
+- Global coverage is still around 19%.
+- This is expected at this stage.
+
+Why coverage did not increase much:
+- Many lines inside evaluation.py are plotting instructions (matplotlib).
+- Plots execute but do not meaningfully count toward coverage reporting.
+- A large part of evaluation.py is therefore still considered "uncovered".
+
+"""
+
+
+
+# tests/test_evaluation.py
+
+import numpy as np
+import pandas as pd
+import matplotlib
+
+# Use a non-interactive backend so plots do not open windows during tests
+matplotlib.use("Agg")
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+
+from src.evaluation import (
+    evaluate_logistic_regression,
+    evaluate_random_forest,
+    plot_roc_curve,
+    plot_feature_importance,
+    plot_confusion_matrix,
+    plot_precision_recall_curve,
+    probabilities_histogram,
+    plot_roc_curve_comparison,
+)
+
+
+def _make_dummy_data(n_samples: int = 100, n_features: int = 4):
+    """Create a simple synthetic binary classification dataset."""
+    rng = np.random.RandomState(42)
+    X = rng.randn(n_samples, n_features)
+    y = rng.randint(0, 2, size=n_samples)
+    return pd.DataFrame(X), pd.Series(y)
+
+
+def _train_models():
+    """Train both models on dummy data and return train/test splits + models."""
+    X, y = _make_dummy_data()
+    # simple 80/20 split
+    split = int(0.8 * len(X))
+    X_train, X_test = X.iloc[:split], X.iloc[split:]
+    y_train, y_test = y.iloc[:split], y.iloc[split:]
+
+    log_reg = LogisticRegression(max_iter=1000)
+    rf = RandomForestClassifier(n_estimators=50, random_state=42)
+
+    log_reg.fit(X_train, y_train)
+    rf.fit(X_train, y_train)
+
+    return log_reg, rf, X_test, y_test
+
+
+def test_evaluate_logistic_regression_returns_valid_shapes_and_probs():
+    """Logistic regression evaluation should return predictions and probabilities."""
+    log_reg, _, X_test, y_test = _train_models()
+
+    y_pred, y_prob = evaluate_logistic_regression(log_reg, X_test, y_test)
+
+    # Shapes must match
+    assert len(y_pred) == len(y_test)
+    assert len(y_prob) == len(y_test)
+
+    # Probabilities must be between 0 and 1
+    assert np.all(y_prob >= 0.0)
+    assert np.all(y_prob <= 1.0)
+
+
+def test_evaluate_random_forest_returns_valid_shapes_and_probs():
+    """Random forest evaluation should return predictions and probabilities."""
+    _, rf, X_test, y_test = _train_models()
+
+    y_pred, y_prob = evaluate_random_forest(rf, X_test, y_test)
+
+    assert len(y_pred) == len(y_test)
+    assert len(y_prob) == len(y_test)
+    assert np.all(y_prob >= 0.0)
+    assert np.all(y_prob <= 1.0)
+
+
+def test_plot_roc_curve_runs_and_returns_fpr_tpr():
+    """ROC plotting should run and return fpr/tpr arrays of correct length."""
+    log_reg, _, X_test, y_test = _train_models()
+    _, y_prob = evaluate_logistic_regression(log_reg, X_test, y_test)
+
+    fpr, tpr = plot_roc_curve(y_test, y_prob)
+
+    # fpr and tpr must have same shape and values between 0 and 1
+    assert fpr.shape == tpr.shape
+    assert np.all(fpr >= 0.0) and np.all(fpr <= 1.0)
+    assert np.all(tpr >= 0.0) and np.all(tpr <= 1.0)
+
+
+def test_plot_feature_importance_runs_without_error():
+    """Feature importance plot should run for a trained logistic regression model."""
+    log_reg, _, X_test, _ = _train_models()
+    feature_names = list(X_test.columns)
+
+    # Just check that the function runs without raising an exception
+    plot_feature_importance(log_reg, feature_names)
+
+
+def test_confusion_matrix_plot_runs_without_error():
+    """Confusion matrix plotting should run."""
+    log_reg, _, X_test, y_test = _train_models()
+    y_pred, _ = evaluate_logistic_regression(log_reg, X_test, y_test)
+
+    plot_confusion_matrix(y_test, y_pred)
+
+
+def test_precision_recall_and_histogram_plots_run_without_error():
+    """Precision–recall curve and probability histogram should run."""
+    log_reg, _, X_test, y_test = _train_models()
+    _, y_prob = evaluate_logistic_regression(log_reg, X_test, y_test)
+
+    plot_precision_recall_curve(y_test, y_prob)
+    probabilities_histogram(y_test, y_prob)
+
+
+def test_plot_roc_curve_comparison_runs_without_error():
+    """ROC comparison plot should run with two pairs of ROC curves."""
+    log_reg, rf, X_test, y_test = _train_models()
+
+    _, y_prob_log = evaluate_logistic_regression(log_reg, X_test, y_test)
+    _, y_prob_rf = evaluate_random_forest(rf, X_test, y_test)
+
+    fpr1, tpr1 = plot_roc_curve(y_test, y_prob_log)
+    fpr2, tpr2 = plot_roc_curve(y_test, y_prob_rf)
+
+    plot_roc_curve_comparison(fpr1, tpr1, fpr2, tpr2)

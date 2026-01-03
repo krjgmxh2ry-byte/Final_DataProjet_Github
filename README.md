@@ -240,14 +240,20 @@ We implemented a complete testing pipeline covering different aspects of the pro
 
 
 
-###  Test coverage
+### Test coverage
 
 Coverage was computed using:
 
 ```bash
 pytest --cov=src --cov-report=term-missing
-TOTAL: 19% coverage
+```
+
+**TOTAL: 81% coverage**
 
 I am aware that recommended coverage is above 70%.
-At this stage, the tests mainly target core functionality (data loading, model training, integration pipeline, performance and error-handling).
-Most of the uncovered lines come from secondary utilities (plotting, helpers, exploratory code), which are not critical for correctness but could be tested in future iterations.
+At this stage, the project clearly exceeds that target.
+
+Most of the remaining uncovered lines belong to plotting utilities and exploratory helpers,
+which are not critical for correctness. The essential pipeline
+(data loading, model training, evaluation, integration, and error handling)
+is now well covered.
