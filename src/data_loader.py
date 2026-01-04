@@ -1,4 +1,5 @@
 """Data loading and preprocessing."""
+
 # This file contains utility functions used to download and prepare
 # all the financial data needed for the project.
 
@@ -6,6 +7,7 @@ import numpy as np
 import yfinance as yf
 import pandas as pd
 from sklearn.model_selection import train_test_split
+
 # Splits data into train/test sets
 
 TICKERS = ["MSFT", "AMZN", "AAPL"]
@@ -33,7 +35,7 @@ def load_benchmark(
     tickers: str = "^GSPC", start: str = "2013-01-01", end: str = "2023-12-31"
 ) -> pd.DataFrame:
     """Load benchmark index data (default: S&P500 (^GSPC))."""
-    
+
     bench = yf.download(tickers=tickers, start=start, end=end, interval="1d")
     bench.columns = bench.columns.get_level_values(0)
     return bench
@@ -70,15 +72,14 @@ def compute_portfolio_returns(stocks: dict) -> pd.DataFrame:
 
     portefeuille = pd.concat(
         [pd.DataFrame(r) for r in rendements.values()], axis=1
-    ).reindex(next(iter(rendements.values())).index)  
+    ).reindex(next(iter(rendements.values())).index)
     # Put all returns into one DataFrame (align dates)
 
     portefeuille.columns = list(rendements.keys())
     # Name the columns with the stock names
 
-    
     portefeuille["moyenne"] = portefeuille.mean(axis=1)
-     # Add portfolio mean return (simple unweighted average)
+    # Add portfolio mean return (simple unweighted average)
     return portefeuille
 
 
@@ -149,7 +150,7 @@ def build_final_df_clean(
     Returns:
         pd.DataFrame: Clean final DataFrame ready for analysis
     """
-   # Assemble the closing prices of each asset in the portfolio.
+    # Assemble the closing prices of each asset in the portfolio.
     portefeuille = pd.concat([df["Close"] for df in df_assets.values()], axis=1)
     portefeuille.columns = df_assets.keys()
     # Normalize the S&P500 to compare relative dynamics.
@@ -222,4 +223,4 @@ def load_and_split(test_size: float = 0.2, random_state: int = 42):
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=test_size, random_state=random_state
     )
-    return X_train, X_test, y_train, y_test, df
+    return X_train, X_test, y_train, y_test
