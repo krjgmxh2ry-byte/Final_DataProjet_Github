@@ -30,7 +30,7 @@ def evaluate_logistic_regression(
     y_pred = model.predict(X_test)
     # Probability of belonging to class 1 (used for curves ROC/PR).
     y_prob = model.predict_proba(X_test)[:, 1]
-    
+
     print("Accuracy:", accuracy_score(y_test, y_pred))
     print(classification_report(y_test, y_pred))
 
@@ -52,7 +52,7 @@ def evaluate_random_forest(
 
 
 def plot_roc_curve(
-    y_test: pd.Series, y_prob: np.ndarray
+    y_test: pd.Series, y_prob: np.ndarray, outpath, plot: bool = False
 ) -> tuple[np.ndarray, np.ndarray]:
     """Plot ROC curve for binary classification."""
     fpr, tpr, thresholds = roc_curve(y_test, y_prob)
@@ -69,12 +69,16 @@ def plot_roc_curve(
     plt.ylabel("True Positive Rate")
     plt.title("Receiver Operating Characteristic")
     plt.legend(loc="lower right")
-    plt.show()
-    #plt.close()   # Close the plot window after showing it so the script can continue running
+    if outpath is not None:
+        plt.savefig(outpath / "roc_curve.png")
+    if plot:
+        plt.show()
     return fpr, tpr
 
 
-def plot_feature_importance(model: LogisticRegression, feature_names: list) -> None:
+def plot_feature_importance(
+    model: LogisticRegression, feature_names: list, outpath, plot: bool = False
+) -> None:
     """Plot the coefficients of the logistic regression model."""
     # Coefficients > 0 favour class 1, < 0 favour class 0.
     coefs = pd.Series(model.coef_[0], index=feature_names)
@@ -86,21 +90,25 @@ def plot_feature_importance(model: LogisticRegression, feature_names: list) -> N
     plt.xlabel("Coefficient Value")
     plt.ylabel("Feature")
     plt.grid(alpha=0.3)
-    plt.show()
-    #plt.close()   # Close the plot window after showing it so the script can continue running
+    if outpath is not None:
+        plt.savefig(outpath / "feature_importance.png")
+    if plot:
+        plt.show()
 
 
-def plot_confusion_matrix(y_test, y_pred) -> None:
+def plot_confusion_matrix(y_test, y_pred, outpath, plot: bool = False) -> None:
     """Plots the confusion matrix."""
     cm = confusion_matrix(y_test, y_pred)
     disp = ConfusionMatrixDisplay(cm, display_labels=[0, 1])
     disp.plot(cmap="Blues")
     plt.title("Confusion Matrix")
-    plt.show()
-    #plt.close()   # Close the plot window after showing it so the script can continue running
+    if outpath is not None:
+        plt.savefig(outpath / "confusion_matrix.png")
+    if plot:
+        plt.show()
 
 
-def plot_precision_recall_curve(y_test, y_prob) -> None:
+def plot_precision_recall_curve(y_test, y_prob, outpath, plot: bool = False) -> None:
     """Plot the precision-recall curve to evaluate classifier performance across thresholds."""
     precision, recall, _ = precision_recall_curve(y_test, y_prob)
     plt.figure(figsize=(8, 6))
@@ -109,11 +117,13 @@ def plot_precision_recall_curve(y_test, y_prob) -> None:
     plt.ylabel("Precision")
     plt.title("Precision-Recall Curve")
     plt.grid(alpha=0.3)
-    plt.show()
-    #plt.close()   # Close the plot window after showing it so the script can continue running
+    if outpath is not None:
+        plt.savefig(outpath / "precision_recall_curve.png")
+    if plot:
+        plt.show()
 
 
-def probabilities_histogram(y_test, y_prob) -> None:
+def probabilities_histogram(y_test, y_prob, outpath, plot: bool = False) -> None:
     """Plot a histogram of predicted probabilities for each true class to visualize model confidence."""
     plt.figure(figsize=(8, 6))
     plt.hist(y_prob[y_test == 1], bins=20, alpha=0.5, label="True 1")
@@ -122,11 +132,15 @@ def probabilities_histogram(y_test, y_prob) -> None:
     plt.ylabel("Count")
     plt.title("Histogram of Predicted Probabilities")
     plt.legend()
-    plt.show()
-    #plt.close()   # Close the plot window after showing it so the script can continue running
+    if outpath is not None:
+        plt.savefig(outpath / "predicted_probabilities_histogram.png")
+    if plot:
+        plt.show()
 
 
-def plot_roc_curve_comparison(fpr1, tpr1, fpr2, tpr2) -> None:
+def plot_roc_curve_comparison(
+    fpr1, tpr1, fpr2, tpr2, outpath, plot: bool = False
+) -> None:
     """Visually compare two ROCs (AUC shown in the legend)."""
     plt.figure(figsize=(8, 6))
     plt.plot(fpr1, tpr1, label=f"Logistic Regression (AUC={auc(fpr1, tpr1):.2f})")
@@ -136,9 +150,7 @@ def plot_roc_curve_comparison(fpr1, tpr1, fpr2, tpr2) -> None:
     plt.ylabel("True Positive Rate")
     plt.title("ROC Curve Comparison")
     plt.legend()
-    plt.show()
-    #plt.close()   # Close the plot window after showing it so the script can continue running
-
-
-
-  
+    if outpath is not None:
+        plt.savefig(outpath / "roc_curve_comparison.png")
+    if plot:
+        plt.show()
