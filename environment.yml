@@ -12,4 +12,4 @@ dependencies:
   - yfinance
   - black 
   - mypy
-  - scikit-learn 
+  - pytest-cov
