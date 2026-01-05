@@ -17,6 +17,17 @@ from src.evaluation import (
 )
 from src.models import train_logistic_regression, train_random_forest
 
+import os
+
+# Create results folders automatically
+BASE_RESULTS_DIR = "results"
+SUBFOLDERS = ["logistic_regression", "random_forest", "model_comparison"]
+
+os.makedirs(BASE_RESULTS_DIR, exist_ok=True)
+
+for folder in SUBFOLDERS:
+    os.makedirs(os.path.join(BASE_RESULTS_DIR, folder), exist_ok=True)
+
 RESULTS_PATH = Path("results")
 
 
@@ -26,12 +37,7 @@ def main() -> None:
 
     # 1) Data loading + split train/test
     X_train, X_test, y_train, y_test = load_and_split()
-    # 2) Training + evaluation Logistic Regression
-    (
-        mkdir(RESULTS_PATH / "logistic_regression")
-        if not (RESULTS_PATH / "logistic_regression").exists()
-        else None
-    )
+   
     lr_out_path = Path(RESULTS_PATH / "logistic_regression")
     lr_model = train_logistic_regression(X_train, y_train)
     y_pred_lr, y_prob_lr = evaluate_logistic_regression(lr_model, X_test, y_test)
@@ -41,7 +47,7 @@ def main() -> None:
     plot_precision_recall_curve(y_test, y_prob_lr, lr_out_path)
     probabilities_histogram(y_test, y_prob_lr, lr_out_path)
 
-    # 3) Training + Random Forest Evaluation
+    # 2) Training + Random Forest Evaluation
     (
         mkdir(RESULTS_PATH / "random_forest")
         if not (RESULTS_PATH / "random_forest").exists()
@@ -55,7 +61,7 @@ def main() -> None:
     plot_precision_recall_curve(y_test, y_prob_rf, rf_out_path)
     probabilities_histogram(y_test, y_prob_rf, rf_out_path)
 
-    # 4) Visual comparison of the two models
+    # 3) Visual comparison of the two models
     (
         mkdir(RESULTS_PATH / "model_comparison")
         if not (RESULTS_PATH / "model_comparison").exists()
