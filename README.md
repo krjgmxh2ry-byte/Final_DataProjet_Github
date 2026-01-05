@@ -61,7 +61,7 @@ Evaluating models...
 Accuracy, precision, recall and F1-score printed for each model.
 ```
 
-No files are saved to disk. Results are printed in the terminal and visualized in notebooks.
+The evaluation plots are saved for each model in the `result` folder. 
 
 
 
