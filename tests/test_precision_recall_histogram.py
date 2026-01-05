@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
 from src.evaluation import (
     plot_precision_recall_curve,
@@ -24,8 +23,5 @@ def test_precision_recall_and_histogram_run_without_error():
     y_prob = np.array([0.1, 0.8, 0.3, 0.7, 0.9, 0.2, 0.4, 0.85])
 
     # Call plotting functions (should run without crashing)
-    plot_precision_recall_curve(y_test, y_prob)
-    probabilities_histogram(y_test, y_prob)
-
-    # Close figures so tests do not hang
-    plt.close("all")
+    plot_precision_recall_curve(y_test, y_prob, outpath=None)
+    probabilities_histogram(y_test, y_prob, outpath=None)

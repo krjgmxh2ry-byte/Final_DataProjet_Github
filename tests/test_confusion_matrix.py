@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
 from src.evaluation import plot_confusion_matrix
 
@@ -18,7 +17,4 @@ def test_plot_confusion_matrix_runs_without_error():
     y_pred = np.array([0, 1, 0, 0, 1, 1])
 
     # Call the plotting function
-    plot_confusion_matrix(y_test, y_pred)
-
-    # Close any open figures so tests do not hang
-    plt.close("all")
+    plot_confusion_matrix(y_test, y_pred, outpath=None)

@@ -7,10 +7,12 @@ from src.evaluation import evaluate_logistic_regression
 
 def test_evaluate_logistic_regression_returns_predictions():
     # Fake dataset
-    X = pd.DataFrame({
-        "a": np.random.randn(100),
-        "b": np.random.randn(100),
-    })
+    X = pd.DataFrame(
+        {
+            "a": np.random.randn(100),
+            "b": np.random.randn(100),
+        }
+    )
     y = (X["a"] + X["b"] > 0).astype(int)
 
     model = train_logistic_regression(X, y)

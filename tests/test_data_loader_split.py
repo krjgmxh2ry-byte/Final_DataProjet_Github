@@ -10,7 +10,7 @@ def test_load_and_split_returns_non_empty_sets():
     - Verify that train/test sets and labels are non-empty and consistent.
     """
 
-    X_train, X_test, y_train, y_test, df = load_and_split()
+    X_train, X_test, y_train, y_test = load_and_split()
 
     # Basic non-emptiness checks
     assert len(X_train) > 0

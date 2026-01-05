@@ -16,8 +16,6 @@ Why coverage did not increase much:
 
 """
 
-
-
 # tests/test_evaluation.py
 
 import numpy as np
@@ -99,7 +97,7 @@ def test_plot_roc_curve_runs_and_returns_fpr_tpr():
     log_reg, _, X_test, y_test = _train_models()
     _, y_prob = evaluate_logistic_regression(log_reg, X_test, y_test)
 
-    fpr, tpr = plot_roc_curve(y_test, y_prob)
+    fpr, tpr = plot_roc_curve(y_test, y_prob, outpath=None)
 
     # fpr and tpr must have same shape and values between 0 and 1
     assert fpr.shape == tpr.shape
@@ -113,7 +111,7 @@ def test_plot_feature_importance_runs_without_error():
     feature_names = list(X_test.columns)
 
     # Just check that the function runs without raising an exception
-    plot_feature_importance(log_reg, feature_names)
+    plot_feature_importance(log_reg, feature_names, outpath=None)
 
 
 def test_confusion_matrix_plot_runs_without_error():
@@ -121,7 +119,7 @@ def test_confusion_matrix_plot_runs_without_error():
     log_reg, _, X_test, y_test = _train_models()
     y_pred, _ = evaluate_logistic_regression(log_reg, X_test, y_test)
 
-    plot_confusion_matrix(y_test, y_pred)
+    plot_confusion_matrix(y_test, y_pred, outpath=None)
 
 
 def test_precision_recall_and_histogram_plots_run_without_error():
@@ -129,8 +127,8 @@ def test_precision_recall_and_histogram_plots_run_without_error():
     log_reg, _, X_test, y_test = _train_models()
     _, y_prob = evaluate_logistic_regression(log_reg, X_test, y_test)
 
-    plot_precision_recall_curve(y_test, y_prob)
-    probabilities_histogram(y_test, y_prob)
+    plot_precision_recall_curve(y_test, y_prob, outpath=None)
+    probabilities_histogram(y_test, y_prob, outpath=None)
 
 
 def test_plot_roc_curve_comparison_runs_without_error():
@@ -140,7 +138,7 @@ def test_plot_roc_curve_comparison_runs_without_error():
     _, y_prob_log = evaluate_logistic_regression(log_reg, X_test, y_test)
     _, y_prob_rf = evaluate_random_forest(rf, X_test, y_test)
 
-    fpr1, tpr1 = plot_roc_curve(y_test, y_prob_log)
-    fpr2, tpr2 = plot_roc_curve(y_test, y_prob_rf)
+    fpr1, tpr1 = plot_roc_curve(y_test, y_prob_log, outpath=None)
+    fpr2, tpr2 = plot_roc_curve(y_test, y_prob_rf, outpath=None)
 
-    plot_roc_curve_comparison(fpr1, tpr1, fpr2, tpr2)
+    plot_roc_curve_comparison(fpr1, tpr1, fpr2, tpr2, outpath=None)
