@@ -221,18 +221,18 @@ In this section, I describe the environment in which the experiments were execut
     When cross-validation was required, default Scikit-learn hyperparameters were kept, except for the rolling window size (20 days) used to compute variation, Sharpe-like ratios, and volatility indicators.
 \end{itemize}
 
-\subsection{Performance Evaluation}
+\\subsection{Performance Evaluation}
 
 \begin{table}[H]
 \centering
-\caption{Portfolio Performance Comparison}
+\caption{Model Performance Metrics}
 \label{tab:performance}
 \begin{tabular}{|l|c|c|c|}
 \hline
-\textbf{Model / Portfolio} & \textbf{Mean Return} & \textbf{Volatility} & \textbf{Sharpe-like Ratio} \\
+\textbf{Model} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} \\
 \hline
-S\&P 500 (Benchmark) & 0.012 & 0.081 & 0.15 \\
-Concentrated Tech Portfolio (AAPL–AMZN–MSFT) & 0.021 & 0.095 & 0.22 \\
+Logistic Regression & 0.80 & 0.81 & 0.80 \\
+Random Forest & 0.90 & 0.90 & 0.90 \\
 \hline
 \end{tabular}
 \end{table}
