@@ -43,6 +43,11 @@ Run the full pipeline from the root of the project:
 python main.py
 ```
 
+The project downloads financial data from Yahoo Finance at runtime.
+If the connection fails (rate limit, no internet, or API error), the script may stop and the results/ folder may not be created.
+Simply re-run the script after a few minutes.
+
+
 ### Expected output
 
 When running:
@@ -248,7 +253,7 @@ Coverage was computed using:
 pytest --cov=src --cov-report=term-missing
 ```
 
-**TOTAL: 81% coverage**
+**TOTAL: 88% coverage**
 
 I am aware that recommended coverage is above 70%.
 At this stage, the project clearly exceeds that target.
