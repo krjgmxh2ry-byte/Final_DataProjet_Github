@@ -125,10 +125,10 @@ Below are the main evaluation results obtained when running `python main.py`.
 - F1-score: 0.69 / 0.85
 
 #### Model: Random Forest
-- Test Accuracy: 0.89
-- Precision: 0.84 / 0.94
-- Recall: 0.91 / 0.89
-- F1-score: 0.88 / 0.92
+- Test Accuracy: 0.91
+- Precision: 0.86 / 0.95
+- Recall: 0.92 / 0.90
+- F1-score: 0.89 / 0.93
 
 **Interpretation (short):**
 - Logistic Regression performs consistently and does not overfit.
@@ -171,35 +171,6 @@ All downloads happen inside:
 If the user wants to change tickers or dates, they can modify the parameters directly in that file.
 
 
-
-
-## AI Usage
-
-AI tools were used as support only. I stayed responsible for every decision, explanation, and line of code.
-
-### Tools
-- ChatGPT Pro (since October 2023)
-- OpenAI Codex (used occasionally inside VS Code)
-
-### What AI helped with
-- Clarifying concepts (models, metrics, workflows)
-- Explaining errors and debugging strategies
-- Generating small boilerplate code (function templates, plotting skeletons)
-- Improving documentation structure and wording
-- Suggestions for refactoring and tests
-
-### How I used and verified AI
-- I reviewed every suggestion carefully
-- I rewrote code to fit my own design
-- I tested everything manually
-- I removed anything unclear or incorrect
-
-AI did not write the project for me.  
-It acted as a tutor and assistant.
-
-### Reflection
-Using AI required me to think like an “information architect”:
-asking better questions, selecting useful ideas, and verifying everything before using it.
 
 
 
