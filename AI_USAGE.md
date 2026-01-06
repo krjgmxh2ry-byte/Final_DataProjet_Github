@@ -45,7 +45,7 @@ and the MIT Media Lab study “Your Brain on ChatGPT”.
 The MIT Media Lab study shows that AI can improve speed and accuracy,
 but it also reduces active reasoning: instead of solving problems, the brain shifts toward
 checking and approving AI answers. This can create an illusion of competence over time.
-Keeping this in mind, I used AI carefully — as support for understanding, not as a substitute
+Keeping this in mind, I used AI carefully, as support for understanding, not as a substitute
 for thinking or learning.
 
 These works highlight both the opportunities and the cognitive risks of relying too much on AI.
@@ -54,6 +54,6 @@ With that in mind, I was intentional about how I used AI in this project.
 I focused on understanding concepts first, keeping control over design choices,
 and using AI mainly to clarify ideas when I was blocked.
 
-Rather than replacing my work, AI acted as a complementary tool — useful for guidance,
+Rather than replacing my work, AI acted as a complementary tool, useful for guidance,
 but never a substitute for thinking, practice, and ownership of the final result.
 
