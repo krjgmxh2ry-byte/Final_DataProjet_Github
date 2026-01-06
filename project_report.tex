@@ -108,23 +108,23 @@ From a financial perspective, I wanted to test whether a concentrated portfolio 
 \section{Literature Review / Related Work}
 \label{sec:literature}
 
-The question of whether investors should diversify broadly or concentrate capital in a smaller set of high-conviction assets has been widely discussed in both academic finance and practitioner literature.
+Research on portfolio construction has long examined whether investors benefit more from broad diversification or from concentrating capital in a smaller number of assets. Academic studies generally emphasize that diversification reduces idiosyncratic risk and stabilizes returns, while more recent practitioner literature explores whether carefully selected concentrated portfolios may sometimes achieve superior performance.
 
 \begin{itemize}
 
 \item \textbf{Previous approaches to similar problems}  
-Traditional portfolio theory, strongly associated with John C. Bogle and the Vanguard philosophy, argues that diversification across the market reduces idiosyncratic risk and leads to stable long-term performance. In contrast, authors such as Charlie Munger, Li Lu, Monish Pabrai, and Guy Spier defend concentrated investing, suggesting that superior results can be achieved when investors focus on a few high-quality companies purchased at attractive valuations. These perspectives reflect two different conceptions of risk: volatility versus permanent loss of capital.
+Classical portfolio theory evaluates diversification by comparing diversified indices with alternative strategies. Many works analyse long-term performance, volatility, and drawdowns to determine whether excess returns persist or merely reflect short-term market conditions.
 
 \item \textbf{Relevant algorithms or methodologies}  
-Many quantitative studies evaluate diversification versus concentration using backtesting techniques on historical price data. Typical methods include rolling-window portfolio simulations, computation of cumulative and risk-adjusted returns (e.g., Sharpe-like ratios), drawdown analysis, and systematic comparisons to benchmark indices such as the S\&P 500. These approaches make it possible to assess whether observed outperformance is persistent or only episodic.
+Empirical studies commonly rely on backtesting frameworks applied to historical price data. Typical techniques include rolling-window simulations, cumulative return analysis, Sharpe-like risk-adjusted metrics, and benchmark comparison against indices such as the S\&P 500. These methods aim to separate genuine outperformance from randomness.
 
 \item \textbf{Datasets used in related studies}  
-Related research often relies on publicly available data sources such as Yahoo Finance, FRED, or financial APIs that provide adjusted daily price histories, index values, and macro indicators. These datasets support reproducibility and allow comparisons across multiple market regimes.
+Most studies use publicly available financial datasets (e.g., Yahoo Finance, FRED, or similar APIs) that provide adjusted price histories and index values. Public sources are preferred because they enable reproducibility and allow experiments to be replicated across different market environments.
 
 \end{itemize}
 
-This project builds on these ideas by applying backtesting, rolling metrics, and benchmark comparison to analyze whether a concentrated portfolio of three large technology companies can outperform a diversified market index over time.
-\section{Methodology}
+Overall, the literature shows that concentrated portfolios may occasionally outperform, but results are highly dependent on the period studied and on how risk is measured. This motivates the present project, which applies a transparent backtesting framework to compare a concentrated technology portfolio with a diversified benchmark.\section{Methodology}
+
 \label{sec:methodology}
 
 \subsection{Data Description}
@@ -151,46 +151,44 @@ As with most financial datasets, some missing values appear due to holidays or d
 
 \subsection{Approach}
 
-\noindent The technical approach in this project is organized as a reproducible pipeline designed to compare a concentrated portfolio with a diversified benchmark in a rigorous and transparent way.
+\noindent The project is structured as a reproducible pipeline whose goal is to compare a concentrated equity portfolio with a diversified market benchmark in a transparent and systematic way.
 
 \begin{itemize}
 
-    \item \textbf{Algorithms used}
-    
-    Instead of training a complex machine-learning algorithm, the project uses financial logic and quantitative metrics. The analysis relies on time-series transformations, rolling indicators, and portfolio comparison frameworks rather than predictive black-box models. The emphasis is on understanding risk and return dynamics.
+\item \textbf{Algorithms used}
 
-    \item \textbf{Data preprocessing steps}
-    
-    After downloading raw price data, daily returns are computed and several rolling indicators are generated, such as moving averages, rolling volatility, and Sharpe-like ratios. The preprocessing pipeline aligns dates across assets, removes invalid observations, normalizes variables where necessary, and constructs the final dataset used in the analysis.
+Rather than relying on complex predictive models, the analysis focuses on financial logic and interpretable quantitative indicators. The workflow uses time–series transformations and rolling statistics to study how risk and return evolve over time.
 
-    \item \textbf{Model architecture (decision framework)}
-    
-    The “model” is not a neural network or classifier, but a decision framework comparing two strategies: a concentrated technology portfolio versus the diversified S\&P 500 benchmark. The pipeline is modular, with each function performing a single transformation, making the workflow transparent, debuggable, and reproducible.
+\item \textbf{Data preprocessing}
 
-    \item \textbf{Evaluation metrics}
-    
-    Performance is evaluated using cumulative returns, volatility measures, risk-adjusted returns, drawdowns, and binary indicators showing whether the portfolio outperforms the S\&P 500 over rolling windows. These indicators make it possible to see whether outperformance is persistent, occasional, or dependent on specific market conditions.
+Raw adjusted prices are downloaded and converted into daily returns. From these, rolling averages, volatility measures and Sharpe-like ratios are computed. Dates are aligned across tickers, missing values are removed, and the final dataset is normalized when necessary.
+
+\item \textbf{Decision framework}
+
+The pipeline compares two strategies: (1) an equally-weighted portfolio of three technology stocks and (2) the S\&P 500 index. Each processing step is implemented as a separate function, which makes the workflow easy to trace, modify and reuse.
+
+\item \textbf{Evaluation}
+
+Performance is evaluated through cumulative returns, volatility indicators and simple binary labels showing whether the portfolio outperforms the benchmark over rolling windows. These metrics allow us to observe when outperformance appears and whether it is stable or episodic.
 
 \end{itemize}
 
-\noindent Overall, the approach prioritizes transparency, interpretability, and financial reasoning rather than black-box prediction, making the analysis both academically defensible and closer to real-world investment thinking.
+\noindent Overall, this approach emphasizes clarity and reproducibility, allowing the results to be analyzed and extended in future work.
+
 \subsection{Implementation}
 
-\noindent The implementation of this project is structured to be modular, reproducible, and easy to extend. Below we describe the main implementation aspects.
+\noindent The implementation was designed to be modular and reproducible, with each task separated into clear functions and files.
 
 \begin{itemize}
 
-    \item \textbf{Programming languages and libraries} 
-    
-    The entire project is implemented in Python. The main libraries used are pandas and NumPy for data manipulation, scikit-learn for modelling and evaluation, matplotlib for visualizations, and yfinance for downloading historical stock data. These libraries were chosen because they are widely used in both academia and industry and provide robust tools for financial time-series analysis.
+\item \textbf{Programming stack} \\
+The project is implemented in Python. Core libraries include \texttt{pandas} and \texttt{NumPy} for data manipulation, \texttt{scikit-learn} for model evaluation, \texttt{matplotlib} for visualisation, and \texttt{yfinance} for data retrieval.
 
-    \item \textbf{System architecture}
-    
-    The project follows a pipeline-style architecture rather than a single monolithic script. The \texttt{main.py} file orchestrates the workflow: loading data, preprocessing, building portfolios, training models, and generating results. Helper functions are organized inside the \texttt{src/} directory so that each task remains short, readable, and reusable. This modular structure also simplifies debugging and makes the project easier to extend.
+\item \textbf{Project structure} \\
+The workflow is orchestrated through \texttt{main.py}, which sequentially calls data loading, preprocessing, model evaluation and result generation. Supporting functions are stored inside the \texttt{src/} directory to keep the code short, readable and reusable.
 
-    \item \textbf{Key code components}
-    
-    The data layer downloads prices and risk-free rates, aligns date indexes, and ensures consistent trading calendars. The preprocessing layer computes returns, rolling statistics, and derived indicators such as volatility and Sharpe-like ratios. Another component builds the final dataset and creates the binary label indicating whether the portfolio outperforms the S\&P 500. Error handling is included to remove invalid rows, avoid operations on missing values, and ensure reproducibility.
+\item \textbf{Core components} \\
+The codebase is organised into logical layers: (1) data loading and alignment, (2) feature construction (returns, rolling statistics, volatility), and (3) dataset assembly including the binary label indicating whether the portfolio outperforms the S\&P~500.
 
 \end{itemize}
 
@@ -202,23 +200,20 @@ Present your findings with appropriate visualizations and tables.
 
 \subsection{Experimental Setup}
 
-In this section, I describe the environment in which the experiments were executed, in order to ensure transparency and reproducibility.
+\noindent This section describes the environment used to run the experiments, ensuring transparency and reproducibility.
 
 \begin{itemize}
-    \item \textbf{Hardware specifications:} 
-    All experiments were run on a MacBook (Apple Silicon, M1/M2 architecture) with 8–16GB RAM. No GPU acceleration was required because the project relies mainly on data processing and classical machine-learning models rather than deep learning.
 
-    \item \textbf{Software versions:}
-    The project was implemented in Python (version 3.10+). 
-    The most important libraries used were:
-    Pandas (data manipulation), NumPy (numerical computations), 
-    Scikit-learn (model evaluation and preprocessing), 
-    Matplotlib/Seaborn (visualization), 
-    and yfinance (financial data retrieval).
+\item \textbf{Hardware} \\
+All experiments were executed on a MacBook with Apple Silicon (M1/M2) and 8–16GB RAM. No GPU was required since the project relies on data processing and classical machine-learning tools.
 
-    \item \textbf{Hyperparameters:}
-    Since the objective was mainly exploratory and predictive performance was not the primary goal, only simple and interpretable configurations were used. 
-    When cross-validation was required, default Scikit-learn hyperparameters were kept, except for the rolling window size (20 days) used to compute variation, Sharpe-like ratios, and volatility indicators.
+\item \textbf{Software} \\
+The project runs on Python (3.10+). Key libraries include:
+\texttt{pandas}, \texttt{NumPy}, \texttt{scikit-learn}, \texttt{matplotlib}, and \texttt{yfinance}. These libraries provide stable tools for time-series handling, modelling, and visualisation.
+
+\item \textbf{Main settings / hyperparameters} \\
+Default \texttt{scikit-learn} configurations were used. The only main parameter explicitly chosen is the rolling window (20 days), which is applied when computing volatility, Sharpe-like metrics and other rolling indicators.
+    
 \end{itemize}
 
 \\subsection{Performance Evaluation}
@@ -248,7 +243,7 @@ To better understand the model behavior and performance, we include several key 
 \label{fig:confusion}
 \end{figure}
 
-The confusion matrix shows that the model correctly identifies most periods of outperformance, but still confuses some non-outperforming periods.
+The confusion matrix shows that most outperforming periods are correctly classified, but a non-negligible share of non-outperforming periods are still predicted as outperforming. In practice, this means that the model sometimes produces “false optimism”. While this is less problematic in an academic context, in a real investment setting it would translate into unnecessary trades and potential losses. This highlights the need to balance performance with risk control.
 
 \begin{figure}[H]
 \centering
@@ -257,7 +252,7 @@ The confusion matrix shows that the model correctly identifies most periods of o
 \label{fig:roc}
 \end{figure}
 
-The ROC curve indicates strong discriminative ability, with an AUC close to 0,96. This means the model separates outperforming vs non-outperforming periods reasonably well.
+The ROC curve confirms that the model discriminates well between outperforming and non-outperforming periods across different probability thresholds. An AUC close to 0.96 indicates very strong performance. However, such high values may also reflect specific market conditions in the dataset, suggesting caution when generalizing these results to unseen periods.
 
 \begin{figure}[H]
 \centering
@@ -266,7 +261,7 @@ The ROC curve indicates strong discriminative ability, with an AUC close to 0,96
 \label{fig:pr}
 \end{figure}
 
-The precision–recall curve confirms that the model maintains high precision even when recall increases, meaning predictions are generally reliable.
+The precision–recall curve shows that precision remains high even as recall increases. This means that the model can identify more outperforming periods without dramatically increasing false positives. This behaviour is particularly important in financial contexts, where wrong positive signals (believing the portfolio will outperform when it does not) can be costly.
 
 \begin{figure}[H]
 \centering
@@ -275,35 +270,30 @@ The precision–recall curve confirms that the model maintains high precision ev
 \label{fig:hist}
 \end{figure}
 
-This graph shows how the model distributes its prediction probabilities. We see how confident it is when predicting outperformance (class 1) or underperformance (class 0), and whether the predictions are well separated or mixed.
+The distribution of predicted probabilities reveals that many predictions are concentrated near the extremes (close to 0 or 1). This indicates that the model is often highly confident about its predictions. However, the presence of overlapping regions suggests that some market situations remain ambiguous and difficult to classify, reflecting the inherent uncertainty of financial data.
 
 \section{Discussion}
 \label{sec:discussion}
 
-Analyze and interpret your results:
+\noindent This section reflects on the main results, practical challenges, and methodological limits of the project.
 
 \begin{itemize}
 
-\item \textbf{What worked well?}
+\item \textbf{What worked well?}  
+The model achieved strong predictive performance, with a ROC–AUC close to 0.96 and a confusion matrix showing that most outperforming periods were correctly identified. This suggests that rolling financial indicators such as volatility, covariance, coefficient of variation and Sharpe-like ratios contain relevant information about relative performance versus the S\&P 500.
 
-The model achieved strong predictive performance, with a high ROC–AUC (≈0.96) and a confusion matrix showing that most outperforming periods are correctly identified. This confirms that rolling financial indicators (Sharpe-like ratio, volatility, coefficient of variation, covariance) contain useful information about relative performance versus the S\&P 500. The concentrated portfolio of AAPL–AMZN–MSFT shows clear patterns the model can learn.
+\item \textbf{What were the challenges?}  
+The project was technically demanding. I frequently encountered bugs, version conflicts, and repository issues (e.g., failed \texttt{git push}). Yahoo Finance also temporarily blocked access due to repeated downloads. These issues forced me to debug repeatedly, restart from earlier versions, and better understand the pipeline.
 
-\item \textbf{What were the challenges?}
+\item \textbf{How do the results compare to expectations?}  
+The results align with the idea that large technology stocks can outperform during strong market phases, and that risk-adjusted indicators help detect such periods. However, some metrics appear unusually strong, suggesting sensitivity to the specific period studied.
 
-From a technical perspective, this project was demanding because I do not have a strong background in computer science. I spent many hours debugging, restoring older versions of my files, and fixing code that did not behave as expected. I also faced several issues with Git: some \texttt{push} operations failed, and I had to learn how to recover the repository using \texttt{git pull}. In addition, Yahoo Finance temporarily blocked my access after repeated data downloads, which interrupted the workflow. Overall, I made many mistakes while coding, but each error forced me to carefully re-read, correct, and better understand the pipeline.
-
-\item \textbf{How do your results compare to expectations?}
-
-The results align with the intuition that tech stocks sometimes strongly outperform, especially in bullish regimes, and that risk-adjusted indicators can signal these periods. However, the performance may appear “too good” in some metrics, suggesting possible model sensitivity to the specific period studied.
-
-\item \textbf{Limitations of your approach}
-
-The model is trained only on three technology stocks and one benchmark, which limits generalization. It relies only on historical price data — no macroeconomic variables, fundamentals, or sentiment. There is also a risk of overfitting and look-ahead bias, and the binary formulation ignores transaction costs and the magnitude of returns. Therefore, results should not be interpreted as directly tradable.
+\item \textbf{Limitations of the approach}  
+The analysis uses only three technology stocks and one benchmark, relies exclusively on historical prices, and ignores transaction costs, macroeconomic variables, and sector diversification. Overfitting and look-ahead bias are possible. Therefore, results should be viewed as academic rather than directly tradable.
 
 \end{itemize}
 
-Future work should extend the dataset, include macro and sentiment features, test multiple sectors, and evaluate performance through realistic backtesting with costs and risk constraints.
-
+\noindent Future work should extend the dataset, add macro and sentiment variables, test more sectors, and include realistic backtesting with costs and risk constraints.
 \section{Conclusion and Future Work}
 \label{sec:conclusion}
 
@@ -311,7 +301,7 @@ Future work should extend the dataset, include macro and sentiment features, tes
 
 In this project, I explored whether a concentrated portfolio composed of three major technology stocks (AAPL, AMZN, MSFT) could outperform the S\&P 500. Using historical data, I engineered several financial features (rolling returns, volatility, Sharpe-like ratios, covariance measures) and trained a classification model to predict future outperformance.
 
-Overall, the model demonstrated solid predictive performance. The ROC and precision–recall curves indicate that the classifier can meaningfully distinguish between periods of outperformance and non-outperformance. In several evaluation windows, the concentrated portfolio achieved higher risk-adjusted performance than the benchmark.
+Overall, the analysis shows that the concentrated portfolio can sometimes outperform the S&P 500, but this outperformance is irregular and closely linked to market conditions. The model captures useful relationships, but its predictive power should be interpreted with caution.
 
 \begin{itemize}
 \item The model captured meaningful relationships between risk–return indicators and future outcomes.
@@ -363,26 +353,5 @@ A next step could be transforming the model into a simple decision-support tool 
 
 \end{enumerate}
 
-% ================== APPENDICES ==================
-\newpage
-\appendix
-\section{Additional Figures}
-\label{app:figures}
-
-Include supplementary figures or tables that support but aren't essential to the main narrative.
-
-\section{Code Repository}
-\label{app:code}
-
-\noindent
-\textbf{GitHub Repository:} \url{https://github.com/yourusername/project-repo}
-
-\noindent
-Provide information about:
-\begin{itemize}
-    \item Repository structure
-    \item Installation instructions
-    \item How to reproduce results
-\end{itemize}
 
 \end{document}
