@@ -136,8 +136,7 @@ Overall, the literature shows that concentrated portfolios may occasionally outp
 \item \textbf{Source and collection method}  
 All price data are downloaded automatically through \texttt{yfinance}. This library queries Yahoo Finance and returns adjusted closing prices, which already account for dividends, stock splits, and corporate actions. This method avoids manual downloads and guarantees that the same data can be retrieved again in the future.
 
-\item \textbf{Size and characteristics}  
-The dataset contains daily observations over multiple years for four main tickers: Apple (AAPL), Amazon (AMZN), Microsoft (MSFT), and the S\&P 500 index (\^GSPC). Each time series consists of thousands of trading days, allowing analysis across different market conditions such as bull markets, corrections, and periods of volatility.
+\item \textbf{Size and characteristics} The dataset contains daily observations over multiple years for four main tickers: Apple (AAPL), Amazon (AMZN), Microsoft (MSFT), and the S\&P 500 index (\^GSPC). Each time series consists of thousands of trading days, allowing analysis across different market conditions such as bull markets, corrections, and periods of volatility. The dataset covers the period from January 2013 to December 2023 and contains daily price data. The portfolio is composed of three technology stocks (AAPL, AMZN, MSFT), while the S\&P 500 (\^GSPC) is used as the benchmark. As a proxy for the risk-free rate, the 10-year US Treasury yield (\^TNX) is included and smoothed over a 20-day window. Using a long historical period allows the model to learn from different market phases, including bull and correction cycles.
 
 \item \textbf{Features / variables}  
 From the raw adjusted prices, several derived variables are computed: daily returns, rolling returns, rolling volatility, Sharpe-like indicators, and relative performance measures comparing the portfolio to the benchmark. These features make it possible to evaluate not only how much the assets earn, but also the level of risk required to obtain those returns.
@@ -159,9 +158,11 @@ As with most financial datasets, some missing values appear due to holidays or d
 
 Rather than relying on complex predictive models, the analysis focuses on financial logic and interpretable quantitative indicators. The workflow uses time–series transformations and rolling statistics to study how risk and return evolve over time.
 
-\item \textbf{Data preprocessing}
+\item \textbf{Data preprocessing} Raw adjusted prices are downloaded and converted into daily returns. From these series, rolling averages, volatility measures and Sharpe-like ratios are computed. Daily returns are computed using simple percentage returns, defined as $(P_t / P_{t-1}) - 1$. Rolling statistics are then computed over a 20-day window, including coefficient of variation, Sharpe-like ratios and rolling covariance between the portfolio and the benchmark. 
 
-Raw adjusted prices are downloaded and converted into daily returns. From these, rolling averages, volatility measures and Sharpe-like ratios are computed. Dates are aligned across tickers, missing values are removed, and the final dataset is normalized when necessary.
+The binary target variable indicates whether the portfolio outperforms the S\&P~500 over the subsequent 21 days. Formally, the label equals 1 when the portfolio cumulative return exceeds the benchmark return over the same window, and 0 otherwise. Rolling windows are overlapping, which increases the number of observations while preserving temporal consistency. Dates are aligned across tickers, missing values are removed, and the final dataset is cleaned before training.
+
+Data leakage considerations: all features are computed using historical prices only. However, the train–test split is random rather than chronological. As a result, future observations (in time) may appear in the training set. For financial time-series, this represents a methodological limitation and may inflate performance.
 
 \item \textbf{Decision framework}
 
@@ -170,6 +171,8 @@ The pipeline compares two strategies: (1) an equally-weighted portfolio of three
 \item \textbf{Evaluation}
 
 Performance is evaluated through cumulative returns, volatility indicators and simple binary labels showing whether the portfolio outperforms the benchmark over rolling windows. These metrics allow us to observe when outperformance appears and whether it is stable or episodic.
+
+Label construction: to evaluate whether concentration creates value, we construct a binary label indicating portfolio outperformance over a rolling 20-day horizon. For each day t, we compute the cumulative return of the equally weighted portfolio (AAPL, AMZN, MSFT) and the cumulative return of the S&P 500 between t and t + 20. The label is defined as: y(t)=1 if the portfolio cumulative return exceeds the benchmark, and y(t)=0 otherwise. This formulation allows the model to predict whether concentration is likely to outperform diversification in the short term.
 
 \end{itemize}
 
@@ -190,6 +193,10 @@ The workflow is orchestrated through \texttt{main.py}, which sequentially calls 
 \item \textbf{Core components} \\
 The codebase is organised into logical layers: (1) data loading and alignment, (2) feature construction (returns, rolling statistics, volatility), and (3) dataset assembly including the binary label indicating whether the portfolio outperforms the S\&P~500.
 
+Train–test split: To evaluate generalization, the dataset is divided into a training and a hold-out test set using an 80/20 split. The split is performed at the observation level using the standard scikit-learn function. No cross-validation is applied in this project. This choice keeps the workflow simple, but it implies that performance estimates depend on the particular split and should be interpreted with caution.
+
+Validation strategy: in this project, we rely on a single train–test split rather than full k-fold cross-validation. This choice keeps the workflow simple and aligned with the time-series nature of the data. However, it also means that performance estimates may depend on the chosen split, which represents a limitation and motivates future work using more robust time-series cross-validation schemes.
+
 \end{itemize}
 
 
@@ -205,18 +212,20 @@ Present your findings with appropriate visualizations and tables.
 \begin{itemize}
 
 \item \textbf{Hardware} \\
-All experiments were executed on a MacBook with Apple Silicon (M1/M2) and 8–16GB RAM. No GPU was required since the project relies on data processing and classical machine-learning tools.
+All experiments were executed on a MacBook with Apple Silicon (M4) and 16GB RAM. No GPU was required since the project relies on data processing and classical machine-learning tools.
 
 \item \textbf{Software} \\
 The project runs on Python (3.10+). Key libraries include:
 \texttt{pandas}, \texttt{NumPy}, \texttt{scikit-learn}, \texttt{matplotlib}, and \texttt{yfinance}. These libraries provide stable tools for time-series handling, modelling, and visualisation.
 
-\item \textbf{Main settings / hyperparameters} \\
-Default \texttt{scikit-learn} configurations were used. The only main parameter explicitly chosen is the rolling window (20 days), which is applied when computing volatility, Sharpe-like metrics and other rolling indicators.
-    
+\item \textbf{Main settings / hyperparameters} Default \textit{scikit-learn} configurations were used. The only parameter explicitly chosen is the rolling window (20 days), applied when computing volatility, Sharpe-like metrics and other rolling indicators. 
+
+To improve reproducibility, the train–test split uses a fixed random seed (\texttt{random\_state = 42}). Logistic regression relies on deterministic defaults. However, the Random Forest model is trained with default parameters and does not specify a random seed. As a consequence, individual runs may produce slightly different trees and therefore slightly different results. Full reproducibility would require fixing the random seed at the model level as well.
+
 \end{itemize}
 
-\\subsection{Performance Evaluation}
+\subsection{Performance Evaluation}
+
 
 \begin{table}[H]
 \centering
@@ -253,6 +262,8 @@ The confusion matrix shows that most outperforming periods are correctly classif
 \end{figure}
 
 The ROC curve confirms that the model discriminates well between outperforming and non-outperforming periods across different probability thresholds. An AUC close to 0.96 indicates very strong performance. However, such high values may also reflect specific market conditions in the dataset, suggesting caution when generalizing these results to unseen periods.
+
+Model performance is reported using accuracy, precision, recall, ROC–AUC, confusion matrices and probability distributions. Since the binary label is derived from rolling windows, the class distribution is not perfectly balanced, which means that accuracy alone is not sufficient to judge performance. ROC–AUC and precision–recall curves therefore provide a more informative view, as they capture how the classifier behaves across decision thresholds. Results should be interpreted as predictive signals rather than trading rules.
 
 \begin{figure}[H]
 \centering
@@ -341,7 +352,7 @@ A next step could be transforming the model into a simple decision-support tool 
 
 \item Spier, G. (2014). \textit{The Education of a Value Investor}. Palgrave Macmillan.
 
-\item yfinance Developers. (2024). \textit{Yahoo! Finance market data downloader}. Available at: \url{https://github.com/ranaroussi/yfinance}
+\item yfinance Developers. (2024). \textit{yfinance: Yahoo! Finance market data downloader (Python library)}. Available at: \url{https://github.com/ranaroussi/yfinance}
 
 \item YouTube – Python Finance Tutorial.
 ``AAPL stock analysis with Python and yfinance``. Available at:
@@ -350,6 +361,12 @@ A next step could be transforming the model into a simple decision-support tool 
 \item YouTube – Machine Learning Finance Tutorial.
 ``Predict stock movement using Python``. Available at:
 \url{https://www.youtube.com/watch?v=7wAQCwdvqqo}
+
+\item Cremers, M., \& Petajisto, A. (2009). \textit{How Active Is Your Fund Manager? A New Measure That Predicts Performance}. Review of Financial Studies, 22(9).
+
+\item Krauss, C., Do, X. A., \& Huck, N. (2017). \textit{Deep neural networks, gradient boosted trees and random forests: Statistical arbitrage on the S\&P 500}. European Journal of Operational Research, 259(2).
+
+\item De Prado, M. L. (2018). \textit{Advances in Financial Machine Learning}. Wiley.
 
 \end{enumerate}
 
