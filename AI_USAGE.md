@@ -1,34 +1,44 @@
 ## AI Usage
 
 
+
 ### Tools Used
 - ChatGPT Pro (since October 2023)
 - OpenAI Codex (used occasionally inside VS Code)
 
 
+
 ## Significant Contributions
 
+1. **Writing and Communication**
   AI also helped me refine my English writing: improving clarity, grammar, and style.
 
-1. **Data Loader (src/data_loader.py)**
-   - AI helped me think about how to organize the data download and preprocessing steps
-   - I then implemented the functions and adapted them to my dataset
+2. **Project Orchestration** (`main.py`)
+- **Academic Basis:** Follows the modular workflow and software efficiency principles taught in Week 6 (Software Engineering) and the classification pipelines from Week 8.
+- **AI Usage:** Assisted in automating results folder management (`os.makedirs`) and structuring the CLI entry point.
 
-2. **Model Pipeline (src/models.py & main.py)**
-   - AI provided ideas on how to structure the training and evaluation workflow
-   - I chose the models, tuned parameters, and integrated everything into the pipeline
+3. Data Loading & Engineering (`src/data_loader.py`)
+- **Academic Basis:** Built upon Weeks 3 & 4 (Python Fundamentals) and Week 7 (Linear Regression) for financial data preprocessing. 
+- **AI Usage:** Helpful for managing complex `yfinance` multi-indexes and optimizing data normalization functions.
+- **Human Ownership:** I designed the feature engineering logic, specifically the 20-day smoothed risk-free rate and Sharpe ratio calculations.
 
-3. **Evaluation & Plots (src/evaluation.py)**
-   - AI suggested examples of common metrics and plots
-   - I decided which ones to keep and customized them for my project
+4. Model Definitions (`src/models.py`)
+- **Academic Basis:** Implements **Logistic Regression (Week 7)** and **Random Forest (Week 8)**.
+- **AI Usage:** Assisted in implementing flexible `**kwargs` for hyperparameter tuning.
+- **Human Ownership:** I chose to compare linear vs. non-linear models to analyze financial risk, a strategy learned in Week 11 (Advanced ML).
 
-4. **Documentation (README.md)**
-   - AI helped with wording and ordering of sections
-   - I rewrote explanations so they reflect my own understanding
+5. Evaluation & Metrics (`src/evaluation.py`)
+- **Academic Basis:** Direct application of Week 8 (Classification) metrics: Confusion Matrix, Precision, Recall, and ROC-AUC.
+- **AI Usage:** Supported the drafting of professional docstrings and formatting complex comparison plots.
 
-5. **Tests (tests/)**
-   - AI suggested some initial test patterns
-   - I adapted them, added more cases, and verified the results manually
+6. Exploratory Analysis (`notebooks/`)
+- **Academic Basis:** Uses EDA techniques and covariance analysis related to Week 9 (Unsupervised Learning) and Week 7.
+- **AI Usage:** Acted as a technical guide for advanced `matplotlib` formatting and time-series visualization.
+
+7. Validation & Testing (`tests/`)
+- **Academic Basis:** Implements Unit Testing principles from Week 6 (Software Engineering).
+- **AI Usage:** Suggested edge cases for data validation and assisted with `pytest` configuration.
+
 
 
 ## Learning Moments
@@ -38,8 +48,9 @@
 - I realized that AI is useful as a guide, but the final design and decisions must come from me
 - I became more careful about verifying every suggestion instead of copy-pasting
 
-### Reflection
 
+
+### Reflection
 Before working on this project, I had already spent time reading about AI use in learning,
 including Laurent Alexandre’s book *La guerre des intelligences à l’heure de GPT*
 and the MIT Media Lab study “Your Brain on ChatGPT”. 
@@ -58,4 +69,3 @@ and using AI mainly to clarify ideas when I was blocked.
 
 Rather than replacing my work, AI acted as a complementary tool, useful for guidance,
 but never a substitute for thinking, practice, and ownership of the final result.
-
