@@ -8,6 +8,8 @@
 
 ## Significant Contributions
 
+  AI also helped me refine my English writing: improving clarity, grammar, and style.
+
 1. **Data Loader (src/data_loader.py)**
    - AI helped me think about how to organize the data download and preprocessing steps
    - I then implemented the functions and adapted them to my dataset
