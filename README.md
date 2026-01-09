@@ -1,27 +1,45 @@
 # Portfolio vs S&P500 — Outperformance Prediction (2013–2023)
 
+
 ## 1. Research question
 
 This project predicts whether an equally weighted portfolio of AAPL, AMZN, and MSFT will outperform the S&P 500 over the next 20 days, using machine-learning models and historical financial data.
+
+
+## Project Report
+
+The full project report is available as a PDF:
+
+- `project_report.pdf`
+
+For optimal reading, click directly on the file from the GitHub repository to open it in the browser or download it locally.
 
 
 ## 2. Repository structure
 
 The repository is organized as follows:
 
+- `figures/` – Saved evaluation plots  
+  - ROC curve, precision–recall curve, confusion matrix, probability distributions  
+
 - `notebooks/` – Interactive analysis and visualizations  
-  - `data_exploration.ipynb` – Main notebook: data loading, plots, feature exploration  
-  - `TheDataProject_Notebook.ipynb` – Additional notebook from earlier stages of the project  
+  - `data_exploration_Final.ipynb` – Main notebook: data loading, plots, feature exploration  
 
 - `src/` – Core project code  
   - `data_loader.py` – Downloading data, preprocessing, feature engineering, label creation  
   - `models.py` – Model definitions and training utilities  
   - `evaluation.py` – Evaluation metrics and plotting functions  
 
-- `main.py` – End-to-end pipeline script (runs the whole project from the command line)  
-- `environment.yml` – Conda environment with all dependencies  
-- `README.md` – Project documentation  
+- `tests/` – Unit, integration, performance, error-handling tests  
+
 - `.gitignore` – Files and folders ignored by Git
+- `AI_USAGE.md` – Description of AI assistance used in the project 
+- `environment.yml` – Conda environment with all dependencies
+- `main.py` – End-to-end pipeline script (runs the whole project from the command line)  
+- `project_report.pdf` – Final project report (PDF)  
+- `project_report.tex` – LaTeX source of the project report 
+- `pytest.ini` – Pytest configuration file  
+- `README.md` – Project documentation  
 
 
 ## 3. Installation
@@ -34,6 +52,7 @@ From the root of the repository:
 conda env create -f environment.yml
 conda activate final-data-project
 ```
+
 
 ## 4. How to run the project
 
@@ -69,7 +88,6 @@ Accuracy, precision, recall and F1-score printed for each model.
 The evaluation plots are saved for each model in the `results/` folder. 
 
 
-
 ## 5. Outputs (what you should obtain)
 
 After running the project, you should obtain:
@@ -84,7 +102,6 @@ From the notebook:
 These visualizations help understand how the portfolio behaves vs the S&P500 over time.
 
 
-
 ###  Metrics printed in terminal (when running `python main.py`)
 
 For each model, you should see evaluation metrics such as:
@@ -94,7 +111,6 @@ For each model, you should see evaluation metrics such as:
 - Recall
 - F1-score
 - Classification report
-
 
 
 ###  Internal project artifacts (not committed)
@@ -108,10 +124,7 @@ During execution, the project temporarily creates in-memory objects such as:
 
 These are used only for computation and are **not saved as files**, unless added later.
 
-
-
 In short: if you see the plots in the notebook and the metrics printed in the terminal, the pipeline works correctly.
-
 
 
 ### 5.1 Model results (metrics)
@@ -150,8 +163,6 @@ A value of 0.89 suggests the model distinguishes well between
 “outperform” vs “not outperform”, without relying only on accuracy.
 
 
-
-
 ## 6. Data
 
 The project uses publicly available financial market data:
@@ -171,9 +182,6 @@ All downloads happen inside:
 If the user wants to change tickers or dates, they can modify the parameters directly in that file.
 
 
-
-
-
 ## 7. Requirements
 
 - Python 3.11
@@ -185,7 +193,6 @@ If the user wants to change tickers or dates, they can modify the parameters dir
   - matplotlib
   - seaborn
   - yfinance
-
 
 
 ## 8. Test suite — Results & Coverage
@@ -213,7 +220,6 @@ We implemented a complete testing pipeline covering different aspects of the pro
 ####  Performance test
 - `test_performance.py`
   Ensures model training remains within a reasonable time budget.
-
 
 
 ### Test coverage
