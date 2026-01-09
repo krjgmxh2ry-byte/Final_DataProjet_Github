@@ -48,7 +48,7 @@ If the connection fails (rate limit, no internet, or API error), the script may 
 Simply re-run the script after a few minutes.
 
 
-### Expected output
+### Expected console output
 
 When running:
 
@@ -66,11 +66,11 @@ Evaluating models...
 Accuracy, precision, recall and F1-score printed for each model.
 ```
 
-The evaluation plots are saved for each model in the `result` folder. 
+The evaluation plots are saved for each model in the `results/` folder. 
 
 
 
-## 5. Expected outputs (what you should obtain)
+## 5. Outputs (what you should obtain)
 
 After running the project, you should obtain:
 
