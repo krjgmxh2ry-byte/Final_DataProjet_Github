@@ -19,7 +19,7 @@ For optimal reading, click directly on the file from the GitHub repository to op
 
 The repository is organized as follows:
 
-- `figures/` – Saved evaluation plots  
+- `figures/` – Plots committed for the PDF report (copied from results/) 
   - ROC curve, precision–recall curve, confusion matrix, probability distributions  
 
 - `notebooks/` – Interactive analysis and visualizations  
@@ -86,6 +86,8 @@ Accuracy, precision, recall and F1-score printed for each model.
 ```
 
 The evaluation plots are saved for each model in the `results/` folder. 
+
+results/ is generated at runtime; key figures are also committed in figures/ so they render correctly in project_report.pdf.
 
 
 ## 5. Outputs (what you should obtain)
