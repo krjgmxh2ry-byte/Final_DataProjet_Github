@@ -35,12 +35,12 @@ The repository is organized as follows:
 
 - `.gitignore` – Files and folders ignored by Git
 - `AI_USAGE.md` – Description of AI assistance used in the project 
+- `README.md` – Project documentation 
 - `environment.yml` – Conda environment with all dependencies
 - `main.py` – End-to-end pipeline script (runs the whole project from the command line)  
 - `project_report.pdf` – Final project report (PDF)  
 - `project_report.tex` – LaTeX source of the project report 
 - `pytest.ini` – Pytest configuration file  
-- `README.md` – Project documentation  
 
 
 ## 3. Installation
