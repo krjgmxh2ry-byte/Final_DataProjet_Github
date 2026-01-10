@@ -161,7 +161,7 @@ Result:
 - **AUC = 0.96**
 
 An AUC close to 1.0 indicates strong discriminative ability.  
-A value of 0.89 suggests the model distinguishes well between
+A value of 0.96 suggests the model distinguishes well between
 “outperform” vs “not outperform”, without relying only on accuracy.
 
 
