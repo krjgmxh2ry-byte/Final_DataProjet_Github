@@ -12,7 +12,8 @@ The full project report is available as a PDF:
 
 - `project_report.pdf`
 
-For optimal reading, click directly on the file from the GitHub repository to open it in the browser or download it locally.
+It can be viewed directly in the GitHub interface.  
+If the preview does not load correctly, you can download the file and open it locally.
 
 
 ## 2. Repository structure
