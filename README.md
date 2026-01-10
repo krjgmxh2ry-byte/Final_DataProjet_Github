@@ -156,7 +156,7 @@ different thresholds.
 
 Result:
 
-- **AUC = 0.89**
+- **AUC = 0.96**
 
 An AUC close to 1.0 indicates strong discriminative ability.  
 A value of 0.89 suggests the model distinguishes well between
