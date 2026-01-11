@@ -41,6 +41,8 @@ The repository is organized as follows:
 - `project_report.pdf` – Final project report (PDF)  
 - `project_report.tex` – LaTeX source of the project report 
 - `pytest.ini` – Pytest configuration file  
+- 'PROPOSAL.md' - Original project proposal
+
 
 
 ## 3. Installation
